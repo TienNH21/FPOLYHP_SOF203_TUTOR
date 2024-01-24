@@ -27,7 +27,7 @@ public class S1_LyThuyet {
                     - protected
                     - public
                 * non-access modifiers chẳng hạn static, abstract, synchronized, native, volatile, transient, v.v..
-    + Trừu tượng (Abstraction): Trừu tượng có nghĩ là tổng quát hóa một cái gì đó lên. không cần chú ý chi tiết bên trong.
+    + Trừu tượng (Abstraction): Trừu tượng có nghĩa là tổng quát hóa một cái gì đó lên. không cần chú ý chi tiết bên trong.
         - Tính trừu tượng là một tiến trình ẩn các chi tiết trình triển khai và chỉ hiển thị tính năng tới người dùng. Tính trừu tượng cho phép bạn loại bỏ tính chất phức tạp của đối tượng bằng cách chỉ đưa ra các thuộc tính và phương thức cần thiết của đối tượng trong lập trình.
         - Tính trừu tượng giúp bạn tập trung vào những cốt lõi cần thiết của đối tượng thay vì quan tâm đến cách nó thực hiện.
         - Trong C#, chúng là sử dụng abstract class và abstract interface để có tính trừu tượng.
