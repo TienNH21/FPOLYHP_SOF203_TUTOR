@@ -88,14 +88,39 @@ public class SinhVienForm extends javax.swing.JFrame {
         rdoNu.setText("Nữ");
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         btnSua.setText("Sửa");
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnLamMoi.setText("Làm mới");
+        btnLamMoi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLamMoiMouseClicked(evt);
+            }
+        });
+        btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLamMoiActionPerformed(evt);
+            }
+        });
 
         btnThoat.setText("Thoát");
+        btnThoat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThoatActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -209,6 +234,75 @@ public class SinhVienForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbCNganhActionPerformed
 
+    private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnThoatActionPerformed
+
+    private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
+        System.out.println("btnLamMoiActionPerformed");
+        this.resetForm();
+    }//GEN-LAST:event_btnLamMoiActionPerformed
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        String ma = this.txtMaSV.getText();
+        String hoTen = this.txtHoTen.getText();
+        String cNganh = this.cbbCNganh.getSelectedItem().toString();
+        int gt;
+        
+        if (this.rdoNam.isSelected() == true) {
+            gt = 1;
+        } else {
+            gt = 0;
+        }
+        
+        SinhVien sv = new SinhVien(ma, hoTen, cNganh, gt);
+        this.svRepo.create(sv);
+        this.loadTable();
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int row = this.tblSV.getSelectedRow();
+        if (row == -1) {
+            return ;
+        }
+        
+        String maSV = this.tblSV.getValueAt(row, 0).toString();
+        String hoTen = this.tblSV.getValueAt(row, 1).toString();
+        String cNganh = this.tblSV.getValueAt(row, 2).toString();
+        String gtStr = this.tblSV.getValueAt(row, 3).toString();
+        int gt = gtStr.equals("Nam") ? 1 : 0;
+        
+        SinhVien sv = new SinhVien(maSV, hoTen, cNganh, gt);
+        this.svRepo.delete(sv);
+        this.loadTable();
+        
+        /**
+         * "Nam"
+         * "Nu"
+         * "Nam   "
+         * "naM"
+         * 1 == 1
+         * 1 != 0
+         */
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnLamMoiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLamMoiMouseClicked
+        System.out.println("btnLamMoiMouseClicked");
+    }//GEN-LAST:event_btnLamMoiMouseClicked
+
+    private void resetForm()
+    {
+        /**
+         * Để gán giá trị lên JTextField -> dùng hàm setText(String)
+         * Để gán vị trí được chọn cho JComboBox -> dùng hàm setSelectedIndex(int)
+         * Để chọn vào JRadioButton -> dùng hàm setSelected(boolean)
+         */
+        this.txtMaSV.setText("");
+        this.txtHoTen.setText("");
+        this.cbbCNganh.setSelectedIndex(0);
+        this.rdoNam.setSelected(true);
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
