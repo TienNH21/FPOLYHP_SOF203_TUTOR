@@ -9,8 +9,8 @@ public class SinhVienRepository {
     {
         this.listSV = new ArrayList<>();
         this.listSV.add(new SinhVien("PH00100", "Ng Van A", "UDPM", 1));
-        this.listSV.add(new SinhVien("PH00101", "Ng Thi B", "PTPM", 0));
-        this.listSV.add(new SinhVien("PH00102", "Tr Thi C", "TKTW", 0));
+        this.listSV.add(new SinhVien("PH00101", "Ng Thi B", "UDPM", 0));
+        this.listSV.add(new SinhVien("PH00102", "Tr Thi C", "CNTT", 0));
     }
 
     public ArrayList<SinhVien> getListSV() {

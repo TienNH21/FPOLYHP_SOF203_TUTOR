@@ -95,6 +95,11 @@ public class SinhVienForm extends javax.swing.JFrame {
         });
 
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xóa");
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
@@ -200,6 +205,11 @@ public class SinhVienForm extends javax.swing.JFrame {
                 "Mã SV", "Họ tên", "C/Ngành", "Giới tính"
             }
         ));
+        tblSV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSVMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblSV);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -244,18 +254,7 @@ public class SinhVienForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        String ma = this.txtMaSV.getText();
-        String hoTen = this.txtHoTen.getText();
-        String cNganh = this.cbbCNganh.getSelectedItem().toString();
-        int gt;
-        
-        if (this.rdoNam.isSelected() == true) {
-            gt = 1;
-        } else {
-            gt = 0;
-        }
-        
-        SinhVien sv = new SinhVien(ma, hoTen, cNganh, gt);
+        SinhVien sv = this.getFormData();
         this.svRepo.create(sv);
         this.loadTable();
     }//GEN-LAST:event_btnThemActionPerformed
@@ -289,6 +288,62 @@ public class SinhVienForm extends javax.swing.JFrame {
     private void btnLamMoiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLamMoiMouseClicked
         System.out.println("btnLamMoiMouseClicked");
     }//GEN-LAST:event_btnLamMoiMouseClicked
+
+    private void tblSVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSVMouseClicked
+        int viTri = this.tblSV.getSelectedRow();
+        if (viTri == -1) {
+            return ;
+        }
+        
+        // C1: Đọc dữ liệu từ JTable
+//        String ma = this.tblSV.getValueAt(viTri, 0).toString();
+//        String hoTen = this.tblSV.getValueAt(viTri, 1).toString();
+//        String cNganh = this.tblSV.getValueAt(viTri, 2).toString();
+//        String gtStr = this.tblSV.getValueAt(viTri, 3).toString();
+//        int gt = gtStr.equals("Nam") ? 1 : 0;
+//        SinhVien sv = new SinhVien(ma, hoTen, cNganh, gt);
+
+        // C2: Đọc dữ liệu từ List trong Repo
+        SinhVien sv = this.svRepo.getListSV().get(viTri);
+        
+        // Hiển thị dữ liệu lên Form
+        this.txtMaSV.setText( sv.getMaSV() );
+        this.txtHoTen.setText( sv.getHoTen());
+        this.cbbCNganh.setSelectedItem( sv.getChuyenNganh() );
+        if (sv.getGioiTinh() == 1) {
+            this.rdoNam.setSelected(true);
+        } else {
+            this.rdoNu.setSelected(true);
+        }
+    }//GEN-LAST:event_tblSVMouseClicked
+
+    private SinhVien getFormData()
+    {
+        String ma = this.txtMaSV.getText();
+        String hoTen = this.txtHoTen.getText();
+        String cNganh = this.cbbCNganh.getSelectedItem().toString();
+        int gt;
+        
+        if (this.rdoNam.isSelected() == true) {
+            gt = 1;
+        } else {
+            gt = 0;
+        }
+        
+        SinhVien sv = new SinhVien(ma, hoTen, cNganh, gt);
+        return sv;
+    }
+    
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        int viTri = this.tblSV.getSelectedRow();
+        if (viTri == -1) {
+            return ;
+        }
+        
+        SinhVien sv = this.getFormData();
+        this.svRepo.update(sv);
+        this.loadTable();
+    }//GEN-LAST:event_btnSuaActionPerformed
 
     private void resetForm()
     {
