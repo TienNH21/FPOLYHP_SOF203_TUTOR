@@ -15,7 +15,7 @@ public class SinhVienForm extends javax.swing.JFrame {
     
     private void loadTable()
     {
-        ArrayList<SinhVien> ds = this.svRepo.getListSV();
+        ArrayList<SinhVien> ds = this.svRepo.findAll();
         DefaultTableModel dtm =
             (DefaultTableModel) this.tblSV.getModel();
         
@@ -25,7 +25,7 @@ public class SinhVienForm extends javax.swing.JFrame {
                 sv.getMaSV(),
                 sv.getHoTen(),
                 sv.getChuyenNganh(),
-                sv.getGioiTinh() == 1 ? "Nam" : "Nu",
+                sv.getGioiTinh(),
             };
             
             dtm.addRow(row);
@@ -269,9 +269,7 @@ public class SinhVienForm extends javax.swing.JFrame {
         String hoTen = this.tblSV.getValueAt(row, 1).toString();
         String cNganh = this.tblSV.getValueAt(row, 2).toString();
         String gtStr = this.tblSV.getValueAt(row, 3).toString();
-        int gt = gtStr.equals("Nam") ? 1 : 0;
-        
-        SinhVien sv = new SinhVien(maSV, hoTen, cNganh, gt);
+        SinhVien sv = new SinhVien(maSV, hoTen, cNganh, gtStr);
         this.svRepo.delete(sv);
         this.loadTable();
         
@@ -304,17 +302,17 @@ public class SinhVienForm extends javax.swing.JFrame {
 //        SinhVien sv = new SinhVien(ma, hoTen, cNganh, gt);
 
         // C2: Đọc dữ liệu từ List trong Repo
-        SinhVien sv = this.svRepo.getListSV().get(viTri);
+//        SinhVien sv = this.svRepo.getListSV().get(viTri);
         
         // Hiển thị dữ liệu lên Form
-        this.txtMaSV.setText( sv.getMaSV() );
-        this.txtHoTen.setText( sv.getHoTen());
-        this.cbbCNganh.setSelectedItem( sv.getChuyenNganh() );
-        if (sv.getGioiTinh() == 1) {
-            this.rdoNam.setSelected(true);
-        } else {
-            this.rdoNu.setSelected(true);
-        }
+//        this.txtMaSV.setText( sv.getMaSV() );
+//        this.txtHoTen.setText( sv.getHoTen());
+//        this.cbbCNganh.setSelectedItem( sv.getChuyenNganh() );
+//        if (sv.getGioiTinh().equals("nam")) {
+//            this.rdoNam.setSelected(true);
+//        } else {
+//            this.rdoNu.setSelected(true);
+//        }
     }//GEN-LAST:event_tblSVMouseClicked
 
     private SinhVien getFormData()
@@ -322,12 +320,12 @@ public class SinhVienForm extends javax.swing.JFrame {
         String ma = this.txtMaSV.getText();
         String hoTen = this.txtHoTen.getText();
         String cNganh = this.cbbCNganh.getSelectedItem().toString();
-        int gt;
+        String gt;
         
         if (this.rdoNam.isSelected() == true) {
-            gt = 1;
+            gt = "nam";
         } else {
-            gt = 0;
+            gt = "nu";
         }
         
         SinhVien sv = new SinhVien(ma, hoTen, cNganh, gt);

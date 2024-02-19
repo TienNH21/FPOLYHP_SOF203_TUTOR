@@ -2,48 +2,112 @@ package BAI11_QLSV;
 
 import java.util.ArrayList;
 
+// B1:
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 public class SinhVienRepository {
-    private ArrayList<SinhVien> listSV;
+    // B2:
+    private Connection conn;
     
     public SinhVienRepository()
     {
-        this.listSV = new ArrayList<>();
-        this.listSV.add(new SinhVien("PH00100", "Ng Van A", "UDPM", 1));
-        this.listSV.add(new SinhVien("PH00101", "Ng Thi B", "UDPM", 0));
-        this.listSV.add(new SinhVien("PH00102", "Tr Thi C", "CNTT", 0));
-    }
-
-    public ArrayList<SinhVien> getListSV() {
-        return listSV;
-    }
-
-    public void setListSV(ArrayList<SinhVien> listSV) {
-        this.listSV = listSV;
-    }
-    
-    public void create(SinhVien sv) {
-        this.listSV.add(sv);
-    }
-    
-    public void update(SinhVien newSV)
-    {
-        // UPDATE SinhVien SET ... WHERE maSV = ?
-        for (int i = 0; i < this.listSV.size(); i++) {
-            SinhVien x = this.listSV.get(i);
-            if (x.getMaSV().equals(newSV.getMaSV())) {
-                this.listSV.set(i, newSV);
-            }
+        try {
+            this.conn = DBContext.getConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
-    public void delete(SinhVien svXoa)
+    /**
+     * Lấy ra toàn bộ dữ liệu trong DB
+     */
+    public ArrayList<SinhVien> findAll()
     {
-        // DELETE FROM SinhVien WHERE MaSV = ?
-        for (int i = 0; i < this.listSV.size(); i++) {
-            SinhVien x = this.listSV.get(i);
-            if (x.getMaSV().equals(svXoa.getMaSV())) {
-                this.listSV.remove(i);
+        ArrayList<SinhVien> dssv = new ArrayList<>();
+        
+        // B3: Viết truy vấn và khởi tạo PreparedStatement
+        String sql = "SELECT * FROM SinhVien";
+        try {
+            PreparedStatement ps = this.conn.prepareStatement(sql);
+            
+            // B4: Truyền tham số cho truy vấn và thực thi truy vấn.
+            ps.execute();
+            
+            // B5: Lấy dữ liệu trả về từ ResultSet
+            /**
+             * Chỉ có các truy vấn SELECT mới có dữ liệu trả về qua ResultSet
+             */
+            ResultSet rs = ps.getResultSet();
+            while (rs.next()) {
+                String maSV = rs.getString("MaSV");
+                String hoTen = rs.getString("HoTen");
+                String cNganh = rs.getString("ChuyenNganh");
+                String gioiTinh = rs.getString("GioiTinh");
+                SinhVien sv = new SinhVien(maSV, hoTen, cNganh, gioiTinh);
+                dssv.add(sv);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return dssv;
+    }
+    
+    public void create(SinhVien sv) {
+        /**
+         * Dấu ? đại diện cho các giá trị cần truyền vào trong câu truy vấn,
+         * được gọi là tham số của câu truy vấn.
+         */
+        String query = "INSERT INTO SinhVien(MaSV, HoTen, ChuyenNganh, GioiTinh)"
+            + " VALUES (?, ?, ?, ?)";
+        
+        try {
+            PreparedStatement ps = this.conn.prepareStatement(query);
+            
+            /**
+             * Khi truyền tham số cho câu truy vấn:
+             * Lưu ý thứ tự và kiểu dữ liệu của tham số
+             * Câu truy vấn có bao nhiêu dấu ? thì cần truyền đủ bấy nhiêu giá trị cho câu truy vấn.
+             */
+            ps.setString(1, sv.getMaSV());
+            ps.setString(2, sv.getHoTen());
+            ps.setString(3, sv.getChuyenNganh());
+            ps.setString(4, sv.getGioiTinh());
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void update(SinhVien sv)
+    {
+        String query = "UPDATE SinhVien SET HoTen = ?, ChuyenNganh = ?, GioiTinh = ? "
+            + " WHERE MaSV = ?";
+        
+        try {
+            PreparedStatement ps = this.conn.prepareStatement(query);
+            ps.setString(1, sv.getHoTen());
+            ps.setString(2, sv.getChuyenNganh());
+            ps.setString(3, sv.getGioiTinh());
+            ps.setString(4, sv.getMaSV());
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void delete(SinhVien sv)
+    {
+        String query = "DELTE FROM SinhVien WHERE MaSV = ?";
+        
+        try {
+            PreparedStatement ps = this.conn.prepareStatement(query);
+            ps.setString(1, sv.getMaSV());
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

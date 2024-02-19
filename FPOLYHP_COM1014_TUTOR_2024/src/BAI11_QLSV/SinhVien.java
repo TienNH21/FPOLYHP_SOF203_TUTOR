@@ -4,12 +4,12 @@ public class SinhVien {
     private String maSV;
     private String hoTen;
     private String chuyenNganh;
-    private int gioiTinh;
+    private String gioiTinh;
 
     public SinhVien() {
     }
 
-    public SinhVien(String maSV, String hoTen, String chuyenNganh, int gioiTinh) {
+    public SinhVien(String maSV, String hoTen, String chuyenNganh, String gioiTinh) {
         this.maSV = maSV;
         this.hoTen = hoTen;
         this.chuyenNganh = chuyenNganh;
@@ -40,11 +40,11 @@ public class SinhVien {
         this.chuyenNganh = chuyenNganh;
     }
 
-    public int getGioiTinh() {
+    public String getGioiTinh() {
         return gioiTinh;
     }
 
-    public void setGioiTinh(int gioiTinh) {
+    public void setGioiTinh(String gioiTinh) {
         this.gioiTinh = gioiTinh;
     }
     
